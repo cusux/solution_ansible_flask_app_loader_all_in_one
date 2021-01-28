@@ -1,49 +1,40 @@
 ---
-- name: OpenStack end to end configuration
+- name: Create in-memory inventory from OpenStack
   hosts: localhost
   connection: local
-  gather_facts: false
-  become: false
+  gather_facts: False
+  become: False
 
   tasks:
-
-    - name: Fetch Instance Info
-      os_server_info:
+    - name: Gather instance info
+      os_server_facts:
         cloud: openstack
         region_name: regionOne
-      register: r_os_servers
+      register: __openstack_instances
 
-    - name: Add host
+    - name: Add each gathered instance as host
       add_host:
         name: "{{ item.public_v4 }}"
-        ansible_user: cloud-user
-        ansible_ssh_private_key_file: "~/.ssh/test_id_rsa"
         group:
           - "{{ item.metadata.group }}"
           - "{{ item.metadata.deployment_name }}"
-      loop: "{{ r_os_servers.openstack_servers }}"
+      loop: "{{ __openstack_instances.ansible_facts.openstack_servers }}"
 
+- name: Test the in-memory inventory
+  hosts: all:!localhost
+  gather_facts: False
+
+  tasks:
+    - name: Show groups
+      debug:
+        var: groups
+
+    - name: Wait on instances for connectivity
+      wait_for_connection:
 
 - name: Gather database facts
   hosts: database_servers
   gather_facts: true
-
   tasks: []
 
-- name: Setup Repos
-  hosts: app_servers:load_balancers:database_servers
-  gather_facts: false
-  become: true
-  tags:
-    - common
-
-  tasks:
-
-    - name: Copy repo file
-      copy:
-        src: ../files/open_three-tier-app.repo
-        dest: /etc/yum.repos.d/open_three-tier-app.repo
- 
-- import_playbook: provision_database_tier.yml
-- import_playbook: provision_app_tier.yml
-- import_playbook: provision_load_balancer_tier.yml
+...

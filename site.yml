@@ -1,3 +1,17 @@
-- import_playbook: provision_database_tier.yml
-- import_playbook: provision_app_tier.yml
-- import_playbook: provision_load_balancer_tier.yml
+---
+- name: Import the repositories
+  import_playbook: provision_repos.yml
+
+- name: Import the DB tier
+  import_playbook: provision_database_tier.yml
+
+- name: Import the APP tier
+  import_playbook: provision_app_tier.yml
+
+- name: Import the LB tier
+  import_playbook: provision_load_balancer_tier.yml
+
+- name: Import end-to-end smoketests
+  import_playbook: smoketests.yml
+
+...

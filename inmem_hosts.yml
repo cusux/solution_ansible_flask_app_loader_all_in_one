@@ -32,9 +32,4 @@
     - name: Wait on instances for connectivity
       wait_for_connection:
 
-- name: Gather database facts
-  hosts: database_servers
-  gather_facts: true
-  tasks: []
-
 ...

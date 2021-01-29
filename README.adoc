@@ -1,3 +1,7 @@
+=== DISCLAIMER
+
+This repo will not get provided any context, as it is solely used for training purposes.
+
 === Overview
 
 New monolithic Ansible playbook, `main.yml` and supporting files  which is designed for teaching and training in refacoring and

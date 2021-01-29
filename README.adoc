@@ -1,6 +1,6 @@
-=== DISCLAIMER
+=== DISCLAIMER OF FORK
 
-This repo will not get provided any context, as it is solely used for training purposes.
+This repository has been forked for training purposes only. Do not use this repository in any way other than education!
 
 === Overview
 
